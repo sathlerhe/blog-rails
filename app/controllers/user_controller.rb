@@ -8,6 +8,21 @@ class UserController < ApplicationController
     render json: @user
   end
 
+  def destroy
+    current_user = CurrentUser.get_current_user_by_token(request)
+
+    current_user.destroy
+  end
+
+  def update
+    current_user = CurrentUser.get_current_user_by_token(request)
+    current_user.update(user_params)
+
+    raise Error::BadRequest, current_user.errors.full_messages unless current_user.valid?
+
+    render json: current_user
+  end
+
   private
 
   def user_params

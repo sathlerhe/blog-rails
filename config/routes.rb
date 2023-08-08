@@ -9,6 +9,9 @@ Rails.application.routes.draw do
     registrations: 'user/registrations'
   }
 
+  delete '/users/delete', to: 'user#destroy'
+  put '/users/update', to: 'user#update'
+
   get '/articles', to: 'article#index'
   get '/articles/:id', to: 'article#show'
   post '/articles', to: 'article#create'
