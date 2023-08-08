@@ -26,12 +26,7 @@ class ArticleController < ApplicationController
   end
 
   def create
-    if request.headers['Authorization'].present?
-      jwt_payload = JWT.decode(request.headers['Authorization'].split(' ').last, Rails.application.credentials.devise_jwt_secret_key!).first
-      current_user = User.find(jwt_payload['sub'])
-    else
-      raise Error::Unauthorized
-    end
+    current_user = CurrentUser.get_current_user_by_token(request)
 
     payload = article_params
     payload[:user_id] = current_user[:id]
