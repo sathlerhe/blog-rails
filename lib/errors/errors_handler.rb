@@ -38,4 +38,10 @@ module Error
       super(message, 400)
     end
   end
+
+  class Unauthorized < CustomError
+    def initialize(message = 'You don\'t have permission.')
+      super(message, 401)
+    end
+  end
 end

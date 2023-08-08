@@ -1,22 +1,16 @@
 class UserController < ApplicationController
-  def index
-    render json: User.all
-  end
-
   def create
     @user = User.new(user_params)
 
-    if @user.valid?
-      @user.save
-      render json: @user
-    else
-      raise Error::BadRequest.new(@user.errors.full_messages)
-    end
+    raise Error::BadRequest, @user.errors.full_messages unless @user.valid?
 
+    @user.save
+    render json: @user
   end
 
   private
+
   def user_params
-    params.require(:user).permit(:name, :email)
+    params.require(:user).permit(:name, :email, :password)
   end
 end
