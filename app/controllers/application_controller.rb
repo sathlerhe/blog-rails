@@ -1,4 +1,5 @@
 require './lib/errors/errors_handler'
+require './lib/helpers/get_current_user_by_token'
 
 class ApplicationController < ActionController::API
   include Error::ErrorHandler

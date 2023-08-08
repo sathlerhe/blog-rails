@@ -8,6 +8,12 @@ class UserController < ApplicationController
     render json: @user
   end
 
+  def destroy
+    current_user = CurrentUser.get_current_user_by_token(request)
+
+    current_user.destroy
+  end
+
   private
 
   def user_params
