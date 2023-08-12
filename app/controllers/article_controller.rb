@@ -1,6 +1,9 @@
 class ArticleController < ApplicationController
   def index
-    @articles = Article.joins(:user)
+    title = "%#{params[:title]}%"
+    order = params[:order] ? params[:order].downcase == 'asc' ? :asc : :desc : :desc
+
+    @articles = Article.joins(:user).where("title LIKE ?", title).order(created_at: order)
     @articles_with_author = []
 
     @articles.each do |article|
