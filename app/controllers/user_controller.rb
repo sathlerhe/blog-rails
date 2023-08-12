@@ -12,6 +12,8 @@ class UserController < ApplicationController
     current_user = CurrentUser.get_current_user_by_token(request)
 
     current_user.destroy
+
+    render json: { message: "success" }, status: 200
   end
 
   def update
