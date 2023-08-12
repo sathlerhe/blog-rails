@@ -49,6 +49,17 @@ class ArticleController < ApplicationController
     render json: { message: "success" }, status: 200
   end
 
+  def update
+    current_user = CurrentUser.get_current_user_by_token(request)
+
+    @article = current_user.articles.find(params[:id])
+    @article.update(article_params)
+
+    raise Error::BadRequest, current_user.errors.full_messages unless @article.valid?
+
+    render json: @article
+  end
+
   private
 
   def article_params
