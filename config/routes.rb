@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   delete '/users/delete', to: 'user#destroy'
   put '/users/update', to: 'user#update'
+  get '/users/:id/articles', to: 'user#user_articles'
 
   get '/articles', to: 'article#index'
   get '/articles/:id', to: 'article#show'
