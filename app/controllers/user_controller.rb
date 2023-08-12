@@ -25,6 +25,19 @@ class UserController < ApplicationController
     render json: current_user
   end
 
+  def user_articles
+    @user = User.find(params[:id])
+    @articles = @user.articles.all
+
+    res = {
+      name: @user.name,
+      email: @user.email,
+      articles: @articles
+    }
+
+    render json: res
+  end
+
   private
 
   def user_params
