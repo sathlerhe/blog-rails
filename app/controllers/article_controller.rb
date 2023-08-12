@@ -41,6 +41,14 @@ class ArticleController < ApplicationController
     end
   end
 
+  def destroy
+    current_user = CurrentUser.get_current_user_by_token(request)
+
+    current_user.articles.find(params[:id]).destroy
+
+    render json: { message: "success" }, status: 200
+  end
+
   private
 
   def article_params
