@@ -1,16 +1,22 @@
 class ArticleController < ApplicationController
   def index
     title = "%#{params[:title]}%"
-    order = params[:order] ? params[:order].downcase == 'asc' ? :asc : :desc : :desc
+    if params[:order]
+      order = params[:order].downcase == 'asc' ? :asc : :desc
+    else
+      order = :desc
+    end
 
     @articles = Article.joins(:user).where("title LIKE ?", title).order(created_at: order)
     @articles_with_author = []
 
     @articles.each do |article|
-      article_with_author = article.attributes.merge!(author: {
-        name: article.user.name,
-        email: article.user.email
-      })
+      article_with_author = article.attributes.merge!(
+        author: {
+          name: article.user.name,
+          email: article.user.email
+        }
+      )
 
       @articles_with_author.push(article_with_author)
     end
@@ -20,10 +26,12 @@ class ArticleController < ApplicationController
 
   def show
     @article = Article.joins(:user).find(params[:id])
-    @article_with_author = @article.attributes.merge!(author: {
-      name: @article.user.name,
-      email: @article.user.email
-    })
+    @article_with_author = @article.attributes.merge!(
+      author: {
+        name: @article.user.name,
+        email: @article.user.email
+      }
+    )
 
     render json: @article_with_author
   end
@@ -34,7 +42,6 @@ class ArticleController < ApplicationController
     payload = article_params
     payload[:user_id] = current_user[:id]
     @article = current_user.articles.new(payload)
-
 
     if @article.valid?
       @article.save
